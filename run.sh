@@ -35,7 +35,7 @@ if [ -z "$AZURE_BLOB_SAS_ACCESS_KEY" ]; then
     exit 1
 fi
 
-URL="https://"$AZURE_STORAGE_ACCOUNT".blob.core.windows.net/"$CONTAINER_NAME"/"$BLOB_NAME"
+URL="https://"$AZURE_STORAGE_ACCOUNT".blob.core.windows.net/"$CONTAINER_NAME"/"$BLOB_NAME""
 URL_WITH_SAS=$URL"?"$AZURE_BLOB_SAS_ACCESS_KEY
 echo "Uploading... to " $URL
 azcopy copy $FILENAME $URL_WITH_SAS
