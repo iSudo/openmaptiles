@@ -8,7 +8,8 @@ CREATE OR REPLACE FUNCTION layer_water_name(bbox geometry, zoom_level integer)
                 geometry     geometry,
                 name         text,
                 name_en      text,
-                name_de      text,
+                name_sv      text,
+                name_sv_nodefault  text,
                 tags         hstore,
                 class        text,
                 intermittent int
@@ -25,7 +26,8 @@ SELECT
     geometry,
     name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
-    COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
+    COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
+    name_sv as name_sv_nodefault,
     tags,
     'lake'::text AS class,
     is_intermittent::int AS intermittent
@@ -44,7 +46,8 @@ SELECT
     geometry,
     name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
-    COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
+    COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
+    name_sv as name_sv_nodefault,
     tags,
     'lake'::text AS class,
     is_intermittent::int AS intermittent
@@ -63,7 +66,8 @@ SELECT
     geometry,
     name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
-    COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
+    COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
+    name_sv as name_sv_nodefault,
     tags,
     place::text AS class,
     is_intermittent::int AS intermittent
