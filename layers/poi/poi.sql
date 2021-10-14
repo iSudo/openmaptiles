@@ -17,6 +17,7 @@ CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_wi
                 layer    integer,
                 level    integer,
                 indoor   integer,
+                ref      text,
                 "rank"   int
             )
 AS
@@ -42,6 +43,7 @@ SELECT osm_id_hash AS osm_id,
        NULLIF(layer, 0) AS layer,
        "level",
        CASE WHEN indoor = TRUE THEN 1 END AS indoor,
+       NULLIF(ref, ''),
        row_number() OVER (
            PARTITION BY LabelGrid(geometry, 100 * pixel_width)
            ORDER BY CASE WHEN name = '' THEN 2000 ELSE poi_class_rank(poi_class(subclass, mapping_key)) END ASC
