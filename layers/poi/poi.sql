@@ -26,7 +26,7 @@ SELECT osm_id_hash AS osm_id,
        NULLIF(name, '') AS name,
        COALESCE(NULLIF(name_en, ''), name) AS name_en,
        COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
-       name_sv as name_sv_nodefault,
+       NULLIF(name_sv, name) as name_sv_nodefault,
        tags,
        poi_class(subclass, mapping_key) AS class,
        CASE

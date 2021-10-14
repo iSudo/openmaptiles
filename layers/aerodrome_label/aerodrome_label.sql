@@ -27,7 +27,7 @@ SELECT
     name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
-    name_sv as name_sv_nodefault,
+    NULLIF(name_sv, name) as name_sv_nodefault,
     tags,
     CASE
         %%FIELD_MAPPING: class %%

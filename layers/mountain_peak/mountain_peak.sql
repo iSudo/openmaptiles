@@ -39,7 +39,7 @@ FROM (
                 name,
                 COALESCE(NULLIF(name_en, ''), name) AS name_en,
                 COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
-                name_sv as name_sv_nodefault,
+                NULLIF(name_sv, name) as name_sv_nodefault,
                 tags,
                 substring(ele FROM E'^(-?\\d+)(\\D|$)')::int AS ele,
                 round(substring(ele FROM E'^(-?\\d+)(\\D|$)')::int * 3.2808399)::int AS ele_ft,

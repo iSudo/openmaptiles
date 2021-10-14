@@ -321,7 +321,7 @@ SELECT geometry,
        NULLIF(name, '') AS name,
        COALESCE(NULLIF(name_en, ''), name) AS name_en,
        COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
-       name_sv as name_sv_nodefault,
+       NULLIF(name_sv, name) as name_sv_nodefault,
        waterway_brunnel(is_bridge, is_tunnel) AS brunnel,
        is_intermittent::int AS intermittent,
        tags
