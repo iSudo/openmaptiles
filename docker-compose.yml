@@ -22,7 +22,10 @@ services:
     env_file: .env-postgres
 
   import-data:
-    image: "openmaptiles/import-data:${TOOLS_VERSION}"
+    # Build image from source, so that we'll get the newest datasets
+    # image: "openmaptiles/import-data:${TOOLS_VERSION}"
+    build:
+      context: "https://github.com/openmaptiles/openmaptiles-tools.git#v${TOOLS_VERSION}:docker/import-data"
     env_file: .env
     networks:
       - postgres_conn

@@ -18,7 +18,7 @@ fi
 
 curl -sSfL "https://karttapalvelu.storage.hsldev.com/finland.osm/finland.osm.pbf" -o data/finland-latest.osm.pbf
 
-./quickstart.sh finland-latest
+./quickstart.sh --empty finland-latest
 
 if [ ! -f $FILENAME ]; then
     (echo >&2 "File not found, exiting")
