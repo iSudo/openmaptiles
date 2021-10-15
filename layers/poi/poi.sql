@@ -17,6 +17,7 @@ CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_wi
                 layer    integer,
                 level    integer,
                 indoor   integer,
+                wheelchair integer,
                 ref      text,
                 "rank"   int
             )
@@ -43,6 +44,7 @@ SELECT osm_id_hash AS osm_id,
        NULLIF(layer, 0) AS layer,
        "level",
        CASE WHEN indoor = TRUE THEN 1 END AS indoor,
+       CASE WHEN wheelchair = TRUE THEN 1 END AS wheelchair,
        NULLIF(ref, ''),
        row_number() OVER (
            PARTITION BY LabelGrid(geometry, 100 * pixel_width)
