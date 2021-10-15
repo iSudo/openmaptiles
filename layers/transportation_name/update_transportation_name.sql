@@ -116,8 +116,8 @@ SELECT ST_Simplify(geometry, 50) AS geometry,
        network,
        z_order
 FROM osm_transportation_name_linestring
-WHERE (highway IN ('motorway', 'trunk') OR highway = 'construction' AND construction IN ('motorway', 'trunk'))
-  AND ST_Length(geometry) > 8000
+WHERE (highway IN ('motorway', 'trunk', 'primary', 'secondary') OR highway = 'construction' AND construction IN ('motorway', 'trunk', 'primary', 'secondary'))
+  AND ST_Length(geometry) > 3000
 ;
 CREATE TABLE IF NOT EXISTS osm_transportation_name_linestring_gen1 AS
 SELECT *
@@ -127,7 +127,7 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen1_geometry_idx 
 
 CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen1_highway_partial_idx
     ON osm_transportation_name_linestring_gen1 (highway, construction)
-    WHERE highway IN ('motorway', 'trunk', 'construction');
+    WHERE highway IN ('motorway', 'trunk', 'primary', 'secondary', 'construction');
 
 -- etldoc: osm_transportation_name_linestring_gen1 -> osm_transportation_name_linestring_gen2
 CREATE OR REPLACE VIEW osm_transportation_name_linestring_gen2_view AS
