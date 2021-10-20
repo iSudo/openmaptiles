@@ -373,6 +373,7 @@ tables:
       - corridor
       - pedestrian
       - steps
+      - service
       public_transport:
       - platform
       man_made:
