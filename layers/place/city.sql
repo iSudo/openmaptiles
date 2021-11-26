@@ -67,8 +67,8 @@ FROM (
                   FROM osm_city_point
                   WHERE geometry && bbox
                     AND ((zoom_level = 7 AND place <= 'town'::city_place
-                      OR (zoom_level BETWEEN 8 AND 10 AND place <= 'village'::city_place)
-                      OR (zoom_level BETWEEN 11 AND 13 AND place <= 'suburb'::city_place)
+                      OR (zoom_level BETWEEN 8 AND 9 AND place <= 'village'::city_place)
+                      OR (zoom_level BETWEEN 10 AND 13 AND place <= 'suburb'::city_place)
                       OR (zoom_level >= 14)
                       ))
               ) AS ranked_places
