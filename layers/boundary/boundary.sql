@@ -764,7 +764,7 @@ FROM osm_border_disp_linestring_gen_z13
     );
 
 -- etldoc: layer_boundary[shape=record fillcolor=lightpink, style="rounded,filled",
--- etldoc:     label="<sql> layer_boundary |<z0> z0 |<z1> z1 |<z2> z2 | <z3> z3 | <z4> z4 | <z5> z5 | <z6> z6 | <z7> z7 | <z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13+"]
+-- etldoc:     label="<sql> layer_boundary | <z5> z5 | <z6> z6 | <z7> z7 | <z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13+"]
 CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
@@ -781,36 +781,38 @@ AS
 $$
 SELECT geometry, admin_level, adm0_l, adm0_r, disputed::int, disputed_name, claimed_by, maritime::int
 FROM (
-         -- etldoc: boundary_z0 ->  layer_boundary:z0
-         SELECT *
-         FROM boundary_z0
-         WHERE geometry && bbox
-           AND zoom_level = 0
-         UNION ALL
-         -- etldoc: boundary_z1 ->  layer_boundary:z1
-         SELECT *
-         FROM boundary_z1
-         WHERE geometry && bbox
-           AND zoom_level = 1
-         UNION ALL
-         -- etldoc: boundary_z2 ->  layer_boundary:z2
-         SELECT *
-         FROM boundary_z2
-         WHERE geometry && bbox
-           AND zoom_level = 2
-         UNION ALL
-         -- etldoc: boundary_z3 ->  layer_boundary:z3
-         SELECT *
-         FROM boundary_z3
-         WHERE geometry && bbox
-           AND zoom_level = 3
-         UNION ALL
-         -- etldoc: boundary_z4 ->  layer_boundary:z4
-         SELECT *
-         FROM boundary_z4
-         WHERE geometry && bbox
-           AND zoom_level = 4
-         UNION ALL
+        --  COMMENTED OUT, SINCE COUNTRY BORDERS ARE NOT RELEVANT FOR HSL ON THESE ZOOM LEVELS
+        --  -- etldoc: boundary_z0 ->  layer_boundary:z0
+        --  SELECT *
+        --  FROM boundary_z0
+        --  WHERE geometry && bbox
+        --    AND zoom_level = 0
+        --  UNION ALL
+        --  -- etldoc: boundary_z1 ->  layer_boundary:z1
+        --  SELECT *
+        --  FROM boundary_z1
+        --  WHERE geometry && bbox
+        --    AND zoom_level = 1
+        --  UNION ALL
+        --  -- etldoc: boundary_z2 ->  layer_boundary:z2
+        --  SELECT *
+        --  FROM boundary_z2
+        --  WHERE geometry && bbox
+        --    AND zoom_level = 2
+        --  UNION ALL
+        --  -- etldoc: boundary_z3 ->  layer_boundary:z3
+        --  SELECT *
+        --  FROM boundary_z3
+        --  WHERE geometry && bbox
+        --    AND zoom_level = 3
+        --  UNION ALL
+        --  -- etldoc: boundary_z4 ->  layer_boundary:z4
+        --  SELECT *
+        --  FROM boundary_z4
+        --  WHERE geometry && bbox
+        --    AND zoom_level = 4
+        --  UNION ALL
+
          -- etldoc: boundary_z5 ->  layer_boundary:z5
          SELECT *
          FROM boundary_z5
