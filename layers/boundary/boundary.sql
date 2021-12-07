@@ -764,7 +764,7 @@ FROM osm_border_disp_linestring_gen_z13
     );
 
 -- etldoc: layer_boundary[shape=record fillcolor=lightpink, style="rounded,filled",
--- etldoc:     label="<sql> layer_boundary | <z5> z5 | <z6> z6 | <z7> z7 | <z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13+"]
+-- etldoc:     label="<sql> layer_boundary | <z4> z4 | <z5> z5 | <z6> z6 | <z7> z7 | <z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13+"]
 CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
@@ -806,13 +806,13 @@ FROM (
         --  WHERE geometry && bbox
         --    AND zoom_level = 3
         --  UNION ALL
-        --  -- etldoc: boundary_z4 ->  layer_boundary:z4
-        --  SELECT *
-        --  FROM boundary_z4
-        --  WHERE geometry && bbox
-        --    AND zoom_level = 4
-        --  UNION ALL
 
+         -- etldoc: boundary_z4 ->  layer_boundary:z4
+         SELECT *
+         FROM boundary_z4
+         WHERE geometry && bbox
+           AND zoom_level = 4
+         UNION ALL
          -- etldoc: boundary_z5 ->  layer_boundary:z5
          SELECT *
          FROM boundary_z5
