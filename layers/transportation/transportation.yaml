@@ -40,7 +40,7 @@ layer:
           highway: ['pedestrian', 'path', 'footway', 'cycleway', 'steps', 'bridleway', 'corridor']
           public_transport: 'platform'
         service:
-          highway: service
+          highway: ['service', 'busway']
         track:
           highway: track
         raceway:

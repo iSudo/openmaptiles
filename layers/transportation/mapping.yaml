@@ -230,6 +230,7 @@ tables:
       - track
       - raceway
       - construction
+      - busway
       public_transport:
       - platform
       man_made:
