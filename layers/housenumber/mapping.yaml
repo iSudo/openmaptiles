@@ -4,6 +4,13 @@ tables:
   # etldoc: imposm3 -> osm_housenumber_point
   housenumber_point:
     type: geometry
+    filters: 
+      reject:
+        building: ['no', none]
+        office: [__any__]
+        shop: [__any__]
+        leisure: [__any__]
+        amenity: [__any__]
     columns:
     - name: osm_id
       type: id
