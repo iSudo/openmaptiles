@@ -4,7 +4,7 @@ tables:
   # etldoc: imposm3 -> osm_housenumber_point
   housenumber_point:
     type: geometry
-    filters: 
+    filters:
       reject:
         building: ['no', none]
         office: [__any__]
@@ -18,6 +18,18 @@ tables:
       type: geometry
     - name: housenumber
       key: addr:housenumber
+      type: string
+    - name: office
+      key: office
+      type: string
+    - name: shop
+      key: shop
+      type: string
+    - name: leisure
+      key: leisure
+      type: string
+    - name: amenity
+      key: amenity
       type: string
     type_mappings:
       points:
