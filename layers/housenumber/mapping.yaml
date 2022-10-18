@@ -11,6 +11,7 @@ tables:
         shop: [__any__]
         leisure: [__any__]
         amenity: [__any__]
+        tourism: [__any__]
     columns:
     - name: osm_id
       type: id
@@ -30,6 +31,9 @@ tables:
       type: string
     - name: amenity
       key: amenity
+      type: string
+    - name: tourism
+      key: tourism
       type: string
     type_mappings:
       points:
