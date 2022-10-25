@@ -20,6 +20,15 @@ tables:
     - name: housenumber
       key: addr:housenumber
       type: string
+    - name: unit
+      key: addr:unit
+      type: string
+    - name: ref
+      key: ref
+      type: string
+    - name: entrance
+      key: entrance
+      type: string
     - name: office
       key: office
       type: string
