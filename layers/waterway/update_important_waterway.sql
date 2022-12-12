@@ -18,12 +18,12 @@ CREATE TABLE IF NOT EXISTS osm_important_waterway_linestring (
     geometry geometry,
     name varchar,
     name_en varchar,
-    name_de varchar,
+    name_sv varchar,
     tags hstore
 );
 
 -- etldoc: osm_waterway_linestring ->  osm_important_waterway_linestring
-INSERT INTO osm_important_waterway_linestring (geometry, name, name_en, name_de, tags)
+INSERT INTO osm_important_waterway_linestring (geometry, name, name_en, name_sv, tags)
 SELECT (ST_Dump(geometry)).geom AS geometry,
        name,
        name_en,
@@ -56,12 +56,12 @@ CREATE OR REPLACE FUNCTION insert_important_waterway_linestring_gen(update_id bi
 $$
 BEGIN
     -- etldoc: osm_important_waterway_linestring -> osm_important_waterway_linestring_gen_z11
-    INSERT INTO osm_important_waterway_linestring_gen_z11 (geometry, id, name, name_en, name_de, tags)
+    INSERT INTO osm_important_waterway_linestring_gen_z11 (geometry, id, name, name_en, name_sv, tags)
     SELECT ST_Simplify(geometry, ZRes(12)) AS geometry,
         id,
         name,
         name_en,
-        name_de,
+        name_sv,
         tags
     FROM osm_important_waterway_linestring
     WHERE
@@ -69,12 +69,12 @@ BEGIN
         ST_Length(geometry) > 1000;
 
     -- etldoc: osm_important_waterway_linestring_gen_z11 -> osm_important_waterway_linestring_gen_z10
-    INSERT INTO osm_important_waterway_linestring_gen_z10 (geometry, id, name, name_en, name_de, tags)
+    INSERT INTO osm_important_waterway_linestring_gen_z10 (geometry, id, name, name_en, name_sv, tags)
     SELECT ST_Simplify(geometry, ZRes(11)) AS geometry,
         id,
         name,
         name_en,
-        name_de,
+        name_sv,
         tags
     FROM osm_important_waterway_linestring_gen_z11
     WHERE
@@ -82,12 +82,12 @@ BEGIN
         ST_Length(geometry) > 4000;
 
     -- etldoc: osm_important_waterway_linestring_gen_z10 -> osm_important_waterway_linestring_gen_z9
-    INSERT INTO osm_important_waterway_linestring_gen_z9 (geometry, id, name, name_en, name_de, tags)
+    INSERT INTO osm_important_waterway_linestring_gen_z9 (geometry, id, name, name_en, name_sv, tags)
     SELECT ST_Simplify(geometry, ZRes(10)) AS geometry,
         id,
         name,
         name_en,
-        name_de,
+        name_sv,
         tags
     FROM osm_important_waterway_linestring_gen_z10
     WHERE
@@ -192,7 +192,7 @@ BEGIN
       AND w.name_sv IS NOT DISTINCT FROM c.name_sv
       AND w.tags IS NOT DISTINCT FROM c.tags;
 
-    INSERT INTO osm_important_waterway_linestring (geometry, name, name_en, name_de, tags)
+    INSERT INTO osm_important_waterway_linestring (geometry, name, name_en, name_sv, tags)
     SELECT (ST_Dump(geometry)).geom AS geometry,
            name,
            name_en,

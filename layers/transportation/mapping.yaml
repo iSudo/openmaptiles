@@ -418,7 +418,7 @@ tables:
     - *level
     - *name
     - *name_en
-    - *name_de
+    - *name_sv
     - name: tags
       type: hstore_tags
     - name: ref

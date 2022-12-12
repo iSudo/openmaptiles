@@ -6,7 +6,8 @@ SELECT pp.osm_id,
        pp.geometry,
        pp.name,
        pp.name_en,
-       pp.name_de,
+       pp.name_sv,
+       pp.name_sv_nodefault
        pp.tags,
        pp.ele,
        ne.iso_a2,
@@ -89,7 +90,7 @@ SELECT
     geometry,
     name,
     name_en,
-    name_de,
+    name_sv,
     tags->'natural' AS class,
     tags,
     NULL AS ele,
@@ -101,7 +102,7 @@ FROM (
                 geometry,
                 name,
                 COALESCE(NULLIF(name_en, ''), name) AS name_en,
-                COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
+                COALESCE(NULLIF(name_sv, ''), name, name_en) AS name_sv,
                 tags,
                 row_number() OVER (
                     PARTITION BY LabelGrid(geometry, 100 * pixel_width)

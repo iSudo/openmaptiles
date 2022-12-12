@@ -27,7 +27,7 @@ SELECT
     geometry,
     name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
-    COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
+    COALESCE(NULLIF(name_sv, ''), name, name_en) AS name_sv,
     tags,
     aerodrome_type AS class,
     NULLIF(iata, '') AS iata,
