@@ -74,7 +74,7 @@ FROM (
              COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
              NULLIF(name_sv, name) as name_sv_nodefault,
              tags,
-             'state' AS class,
+             place::text AS class,
              "rank",
              NULL::int AS capital,
              NULL::text AS iso_a2

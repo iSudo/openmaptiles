@@ -20,14 +20,15 @@ You can start from several GL styles supporting the OpenMapTiles vector schema.
 :link: [Learn how to create Mapbox GL styles with Maputnik and OpenMapTiles](http://openmaptiles.org/docs/style/maputnik/).
 
 
+- [OSM OpenMapTiles](./style/README.md)
 - [OSM Bright](https://github.com/openmaptiles/osm-bright-gl-style)
+- [MapTiler Basic](https://github.com/openmaptiles/maptiler-basic-gl-style)
+- [MapTiler 3D](https://github.com/openmaptiles/maptiler-3d-gl-style)
+- [Fiord Color](https://github.com/openmaptiles/fiord-color-gl-style)
+- [MapTiler Toner](https://github.com/openmaptiles/maptiler-toner-gl-style)
+- [OSM Liberty](https://github.com/maputnik/osm-liberty)
 - [Positron](https://github.com/openmaptiles/positron-gl-style)
 - [Dark Matter](https://github.com/openmaptiles/dark-matter-gl-style)
-- [Klokantech Basic](https://github.com/openmaptiles/klokantech-basic-gl-style)
-- [Klokantech 3D](https://github.com/openmaptiles/klokantech-3d-gl-style)
-- [Fiord Color](https://github.com/openmaptiles/fiord-color-gl-style)
-- [Toner](https://github.com/openmaptiles/toner-gl-style)
-- [OSM Liberty](https://github.com/maputnik/osm-liberty)
 
 We also ported over our favorite old raster styles (TM2).
 
@@ -71,6 +72,10 @@ To work on OpenMapTiles you need Docker.
 - Install [Docker](https://docs.docker.com/engine/installation/). Minimum version is 1.12.3+.
 - Install [Docker Compose](https://docs.docker.com/compose/install/). Minimum version is 1.7.1+.
 
+### Microsoft Windows Subsystem for Linux (WSL)
+
+Please use Linux `/home/user/` directory, not Windows e.g. `/mnt/c` directory.
+
 ### Build
 
 Build the tileset.
@@ -97,7 +102,7 @@ Now start up the database container.
 make start-db
 ```
 
-Import external data from [OpenStreetMapData](http://osmdata.openstreetmap.de/), [Natural Earth](http://www.naturalearthdata.com/) and [OpenStreetMap Lake Labels](https://github.com/lukasmartinelli/osm-lakelines).
+Import external data from [OpenStreetMapData](http://osmdata.openstreetmap.de/), [Natural Earth](http://www.naturalearthdata.com/) and [OpenStreetMap Lake Labels](https://github.com/lukasmartinelli/osm-lakelines). Natural Earth country boundaries are used in the few lowest zoom levels.
 
 ```bash
 make import-data
@@ -110,11 +115,10 @@ make download area=albania
 ```
 
 [Import OpenStreetMap data](https://github.com/openmaptiles/openmaptiles-tools/tree/master/docker/import-osm) with the mapping rules from
-`build/mapping.yaml` (which has been created by `make`). Run after any change in layers definition.  Also create borders table using extra processing with [osmborder](https://github.com/pnorman/osmborder) tool.
+`build/mapping.yaml` (which has been created by `make`). Run after any change in layers definition.
 
 ```bash
 make import-osm
-make import-borders
 ```
 
 Import labels from Wikidata. If an OSM feature has [Key:wikidata](https://wiki.openstreetmap.org/wiki/Key:wikidata), OpenMapTiles check corresponding item in Wikidata and use its [labels](https://www.wikidata.org/wiki/Help:Label) for languages listed in [openmaptiles.yaml](openmaptiles.yaml). So the generated vector tiles includes multi-languages in name field.
@@ -126,6 +130,13 @@ make import-wikidata
 ```
 
 ### Work on Layers
+Each time you modify a layer's `mapping.yaml` file or add new OSM tags, run `make` and `make import-osm` to recreate tables (potentially with additional data) in PostgreSQL. With the new data, there can be new Wikidata records also.
+```
+make clean
+make
+make import-osm
+make import-wikidata
+```
 
 Each time you modify layer SQL code run `make` and `make import-sql`.
 
@@ -135,16 +146,43 @@ make
 make import-sql
 ```
 
+Each time you make a modification that adds a new feature to vector tiles e.g. adding new OSM tags, modify the layer 
+style snippet by adding new style layer so the changes are propagated visually into the style.
+All new style layers must have the `order` value which determines the order or rendering in the map style. 
+After the layer style snippet is modified run:
+```bash
+make build-style
+```
+
+
+
 Now you are ready to **generate the vector tiles**. By default, `./.env` specifies the entire planet BBOX for zooms 0-7, but running `generate-bbox-file` will analyze the data file and set the `BBOX` param to limit tile generation.
 
 ```
 make generate-bbox-file  # compute data bbox -- not needed for the whole planet
-make generate-tiles      # generate tiles
+make generate-tiles-pg   # generate tiles
 ```
+
+### Workflow to generate tiles
+If you go from top to bottom you can be sure that it will generate a .mbtiles file out of a .osm.pbf file
+```
+make clean                  # clean / remove existing build files
+make                        # generate build files
+make start-db               # start up the database container.
+make import-data            # Import external data from OpenStreetMapData, Natural Earth and OpenStreetMap Lake Labels.
+make download area=albania  # download albania .osm.pbf file -- can be skipped if a .osm.pbf file already existing
+make import-osm             # import data into postgres
+make import-wikidata        # import Wikidata
+make import-sql             # create / import sql functions 
+make generate-bbox-file     # compute data bbox -- not needed for the whole planet
+make generate-tiles-pg      # generate tiles
+```
+Instead of calling `make download area=albania` you can add a .osm.pbf file in the `data` folder `openmaptiles/data/your_area_file.osm.pbf`
+
 
 ## License
 
-All code in this repository is under the [BSD license](./LICENSE.md) and the cartography decisions encoded in the schema and SQL are licensed under [CC-BY](./LICENSE.md).
+All code in this repository is under the [BSD license](./LICENSE.md). Design and the cartography decisions encoded in the schema and SQL are licensed under [CC-BY](./LICENSE.md).
 
 Products or services using maps derived from OpenMapTiles schema need to visibly credit "OpenMapTiles.org" or reference "OpenMapTiles" with a link to https://openmaptiles.org/. Exceptions to attribution requirement can be granted on request.
 
