@@ -6,7 +6,10 @@ CREATE OR REPLACE FUNCTION layer_housenumber(bbox geometry, zoom_level integer)
             (
                 osm_id      bigint,
                 geometry    geometry,
-                housenumber text
+                housenumber text,
+                unit        text,
+                ref         text,
+                entrance    text
             )
 AS
 $$
@@ -14,7 +17,10 @@ SELECT
     -- etldoc: osm_housenumber_point -> layer_housenumber:z14_
     osm_id,
     geometry,
-    housenumber
+    housenumber,
+    unit,
+    ref,
+    entrance
 FROM osm_housenumber_point
 WHERE zoom_level >= 14
   AND geometry && bbox;
