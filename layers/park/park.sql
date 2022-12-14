@@ -10,7 +10,6 @@ CREATE OR REPLACE FUNCTION layer_park(bbox geometry, zoom_level int, pixel_width
                 name     text,
                 name_en  text,
                 name_sv  text,
-                name_sv_nodefault  text,
                 tags     hstore,
                 rank     int
             )
@@ -20,9 +19,8 @@ SELECT osm_id,
        geometry,
        class,
        NULLIF(name, '') AS name,
-       NULLIF(name_en, '') AS name_en,
-       NULLIF(name_sv, ''), name) AS name_sv,
-       NULLIF(name_sv, name) as name_sv_nodefault,
+       COALESCE(NULLIF(name_en, ''), name) AS name_en,
+       COALESCE(NULLIF(name_sv, ''), name), name AS name_sv,
        tags,
        rank
 FROM (

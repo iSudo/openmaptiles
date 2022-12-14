@@ -28,6 +28,7 @@ SELECT
     name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_sv, ''), name, name_en) AS name_sv,
+    NULLIF(name_sv, name) as name_sv_nodefault,
     tags,
     aerodrome_type AS class,
     NULLIF(iata, '') AS iata,

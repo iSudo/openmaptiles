@@ -375,8 +375,6 @@ def_poi_fields: &poi_fields
   - name: wheelchair
     key: wheelchair
     type: bool
-  - name: ref
-    key: ref
   - name: operator
     key: operator
     type: string
