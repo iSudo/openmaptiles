@@ -3,70 +3,12 @@
 -- to allow for nice label rendering
 -- Because this works well for roads that do not have relations as well
 
-
--- etldoc: osm_highway_linestring ->  osm_transportation_name_network
--- etldoc: osm_route_member ->  osm_transportation_name_network
-CREATE TABLE IF NOT EXISTS osm_transportation_name_network AS
-SELECT
-    geometry,
-    osm_id,
-    name,
-    name_en,
-    name_sv,
-    tags,
-    ref,
-    highway,
-    construction,
-    brunnel,
-    "level",
-    layer,
-    indoor,
-    network_type,
-    z_order
-FROM (
-    SELECT hl.geometry,
-        hl.osm_id,
-        CASE WHEN length(hl.name) > 15 THEN osml10n_street_abbrev_all(hl.name) ELSE NULLIF(hl.name, '') END AS "name",
-        CASE WHEN length(hl.name_en) > 15 THEN osml10n_street_abbrev_en(hl.name_en) ELSE NULLIF(hl.name_en, '') END AS "name_en",
-        CASE WHEN length(hl.name_sv) > 15 THEN osml10n_street_abbrev_de(hl.name_sv) ELSE NULLIF(hl.name_sv, '') END AS "name_sv",
-        slice_language_tags(hl.tags) AS tags,
-        rm.network_type,
-        CASE
-            WHEN rm.network_type IS NOT NULL AND nullif(rm.ref::text, '') IS NOT NULL
-                THEN rm.ref::text
-            ELSE NULLIF(hl.ref, '')
-            END AS ref,
-        hl.highway,
-        hl.construction,
-        brunnel(hl.is_bridge, hl.is_tunnel, hl.is_ford) AS brunnel,
-        CASE WHEN highway IN ('footway', 'steps') THEN layer END AS layer,
-        CASE WHEN highway IN ('footway', 'steps') THEN level END AS level,
-        CASE WHEN highway IN ('footway', 'steps') THEN indoor END AS indoor,
-        ROW_NUMBER() OVER (PARTITION BY hl.osm_id
-            ORDER BY rm.network_type) AS "rank",
-        hl.z_order
-    FROM osm_highway_linestring hl
-            LEFT JOIN osm_route_member rm ON
-        rm.member = hl.osm_id
-    WHERE (hl.name <> '' OR hl.ref <> '')
-      AND NULLIF(hl.highway, '') IS NOT NULL
-) AS t
-WHERE ("rank" = 1 OR "rank" IS NULL);
-CREATE INDEX IF NOT EXISTS osm_transportation_name_network_osm_id_idx ON osm_transportation_name_network (osm_id);
-CREATE INDEX IF NOT EXISTS osm_transportation_name_network_name_ref_idx ON osm_transportation_name_network (coalesce(name, ''), coalesce(ref, ''));
-CREATE INDEX IF NOT EXISTS osm_transportation_name_network_geometry_idx ON osm_transportation_name_network USING gist (geometry);
-
-
 -- etldoc: osm_transportation_name_network ->  osm_transportation_name_linestring
 -- etldoc: osm_shipway_linestring ->  osm_transportation_name_linestring
 -- etldoc: osm_aerialway_linestring ->  osm_transportation_name_linestring
 CREATE TABLE IF NOT EXISTS osm_transportation_name_linestring AS
 SELECT (ST_Dump(geometry)).geom AS geometry,
-       NULL::bigint AS osm_id,
-       name,
-       name_en,
-       name_sv,
-       tags || get_basic_names(tags, geometry) AS "tags",
+       tags || get_basic_names(tags, geometry) AS tags,
        ref,
        highway,
        subclass,
@@ -81,11 +23,7 @@ SELECT (ST_Dump(geometry)).geom AS geometry,
        route_rank
 FROM (
          SELECT ST_LineMerge(ST_Collect(geometry)) AS geometry,
-                name,
-                name_en,
-                name_sv,
-                tags || hstore( -- store results of osml10n_street_abbrev_* above
-                               ARRAY ['name', name, 'name:en', name_en, 'name:sv', name_sv]) AS tags,
+                tags,
                 ref,
                 highway,
                 subclass,
@@ -164,10 +102,6 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_highway_partial_id
 -- etldoc: osm_transportation_name_linestring -> osm_transportation_name_linestring_gen1
 CREATE OR REPLACE VIEW osm_transportation_name_linestring_gen1_view AS
 SELECT ST_Simplify(geometry, 50) AS geometry,
-       osm_id,
-       name,
-       name_en,
-       name_sv,
        tags,
        ref,
        highway,
@@ -177,7 +111,7 @@ SELECT ST_Simplify(geometry, 50) AS geometry,
        route_1, route_2, route_3, route_4, route_5, route_6,
        z_order
 FROM osm_transportation_name_linestring
-WHERE (highway IN ('motorway', 'trunk', 'primary', 'secondary') OR highway = 'construction' AND construction IN ('motorway', 'trunk', 'primary', 'secondary'))
+WHERE (highway IN ('motorway', 'trunk', 'primary', 'secondary') OR highway = 'construction' AND subclass IN ('motorway', 'trunk', 'primary', 'secondary'))
   AND ST_Length(geometry) > 3000
 ;
 CREATE TABLE IF NOT EXISTS osm_transportation_name_linestring_gen1 AS
@@ -187,16 +121,12 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen1_name_ref_idx 
 CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen1_geometry_idx ON osm_transportation_name_linestring_gen1 USING gist (geometry);
 
 CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen1_highway_partial_idx
-    ON osm_transportation_name_linestring_gen1 (highway, construction)
+    ON osm_transportation_name_linestring_gen1 (highway, subclass)
     WHERE highway IN ('motorway', 'trunk', 'primary', 'secondary', 'construction');
 
 -- etldoc: osm_transportation_name_linestring_gen1 -> osm_transportation_name_linestring_gen2
 CREATE OR REPLACE VIEW osm_transportation_name_linestring_gen2_view AS
 SELECT ST_Simplify(geometry, 120) AS geometry,
-       osm_id,
-       name,
-       name_en,
-       name_sv,
        tags,
        ref,
        highway,
@@ -222,10 +152,6 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen2_highway_parti
 -- etldoc: osm_transportation_name_linestring_gen2 -> osm_transportation_name_linestring_gen3
 CREATE OR REPLACE VIEW osm_transportation_name_linestring_gen3_view AS
 SELECT ST_Simplify(geometry, 200) AS geometry,
-       osm_id,
-       name,
-       name_en,
-       name_sv,
        tags,
        ref,
        highway,
@@ -251,10 +177,6 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen3_highway_parti
 -- etldoc: osm_transportation_name_linestring_gen3 -> osm_transportation_name_linestring_gen4
 CREATE OR REPLACE VIEW osm_transportation_name_linestring_gen4_view AS
 SELECT ST_Simplify(geometry, 500) AS geometry,
-       osm_id,
-       name,
-       name_en,
-       name_sv,
        tags,
        ref,
        highway,
@@ -356,9 +278,6 @@ BEGIN
     SELECT
         geometry,
         osm_id,
-        name,
-        name_en,
-        name_sv,
         tags || get_basic_names(tags, geometry) AS tags,
         ref,
         highway,
@@ -454,9 +373,6 @@ CREATE TABLE IF NOT EXISTS transportation_name.name_changes
     id serial PRIMARY KEY,
     is_old boolean,
     osm_id bigint,
-    name character varying,
-    name_en character varying,
-    name_sv character varying,
     tags hstore,
     ref character varying,
     highway character varying,
@@ -558,11 +474,8 @@ BEGIN
     DELETE
     FROM osm_transportation_name_linestring AS n
         USING name_changes_compact AS c
-    WHERE coalesce(n.name, '') = coalesce(c.name, '')
-      AND coalesce(n.ref, '') = coalesce(c.ref, '')
-      AND n.name IS NOT DISTINCT FROM c.name
-      AND n.name_en IS NOT DISTINCT FROM c.name_en
-      AND n.name_sv IS NOT DISTINCT FROM c.name_sv
+    WHERE coalesce(n.ref, '') = coalesce(c.ref, '')
+      AND coalesce(n.tags, '') = coalesce(c.tags, '')
       AND n.highway IS NOT DISTINCT FROM c.highway
       AND n.subclass IS NOT DISTINCT FROM c.subclass
       AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -580,10 +493,6 @@ BEGIN
 
     INSERT INTO osm_transportation_name_linestring
     SELECT (ST_Dump(geometry)).geom AS geometry,
-           NULL::bigint AS osm_id,
-           name,
-           name_en,
-           name_sv,
            tags || get_basic_names(tags, geometry) AS tags,
            ref,
            highway,
@@ -617,11 +526,8 @@ BEGIN
             min(n.z_order) AS z_order
         FROM osm_transportation_name_network AS n
             JOIN name_changes_compact AS c ON
-                 coalesce(n.name, '') = coalesce(c.name, '')
-             AND coalesce(n.ref, '') = coalesce(c.ref, '')
-             AND n.name IS NOT DISTINCT FROM c.name
-             AND n.name_en IS NOT DISTINCT FROM c.name_en
-             AND n.name_sv IS NOT DISTINCT FROM c.name_sv
+                 coalesce(n.ref, '') = coalesce(c.ref, '')
+             AND coalesce(n.tags, '') = coalesce(c.tags, '')
              AND n.highway IS NOT DISTINCT FROM c.highway
              AND n.subclass IS NOT DISTINCT FROM c.subclass
              AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -647,9 +553,6 @@ BEGIN
         coalesce(n.tags->'name', n.ref) = c.name_ref
         AND coalesce(n.tags, '') = coalesce(c.tags, '')
         AND n.ref IS NOT DISTINCT FROM c.ref
-        AND n.name IS NOT DISTINCT FROM c.name
-        AND n.name_en IS NOT DISTINCT FROM c.name_en
-        AND n.name_sv IS NOT DISTINCT FROM c.name_sv
         AND n.highway IS NOT DISTINCT FROM c.highway
         AND n.subclass IS NOT DISTINCT FROM c.subclass
         AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -668,9 +571,6 @@ BEGIN
             coalesce(n.tags->'name', n.ref) = c.name_ref
             AND coalesce(n.tags, '') = coalesce(c.tags, '')
             AND n.ref IS NOT DISTINCT FROM c.ref
-            AND n.name IS NOT DISTINCT FROM c.name
-            AND n.name_en IS NOT DISTINCT FROM c.name_en
-            AND n.name_sv IS NOT DISTINCT FROM c.name_sv
             AND n.highway IS NOT DISTINCT FROM c.highway
             AND n.subclass IS NOT DISTINCT FROM c.subclass
             AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -689,9 +589,6 @@ BEGIN
         coalesce(n.tags->'name', n.ref) = c.name_ref
         AND coalesce(n.tags, '') = coalesce(c.tags, '')
         AND n.ref IS NOT DISTINCT FROM c.ref
-        AND n.name IS NOT DISTINCT FROM c.name
-        AND n.name_en IS NOT DISTINCT FROM c.name_en
-        AND n.name_sv IS NOT DISTINCT FROM c.name_sv
         AND n.highway IS NOT DISTINCT FROM c.highway
         AND n.subclass IS NOT DISTINCT FROM c.subclass
         AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -731,9 +628,6 @@ BEGIN
         coalesce(n.tags->'name', n.ref) = c.name_ref
         AND coalesce(n.tags, '') = coalesce(c.tags, '')
         AND n.ref IS NOT DISTINCT FROM c.ref
-        AND n.name IS NOT DISTINCT FROM c.name
-        AND n.name_en IS NOT DISTINCT FROM c.name_en
-        AND n.name_sv IS NOT DISTINCT FROM c.name_sv
         AND n.highway IS NOT DISTINCT FROM c.highway
         AND n.subclass IS NOT DISTINCT FROM c.subclass
         AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -752,9 +646,6 @@ BEGIN
             coalesce(n.tags->'name', n.ref) = c.name_ref
             AND coalesce(n.tags, '') = coalesce(c.tags, '')
             AND n.ref IS NOT DISTINCT FROM c.ref
-            AND n.name IS NOT DISTINCT FROM c.name
-            AND n.name_en IS NOT DISTINCT FROM c.name_en
-            AND n.name_sv IS NOT DISTINCT FROM c.name_sv
             AND n.highway IS NOT DISTINCT FROM c.highway
             AND n.subclass IS NOT DISTINCT FROM c.subclass
             AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -773,8 +664,6 @@ BEGIN
         coalesce(n.tags->'name', n.ref) = c.name_ref
         AND coalesce(n.tags, '') = coalesce(c.tags, '')
         AND n.ref IS NOT DISTINCT FROM c.ref
-        AND n.name_en IS NOT DISTINCT FROM c.name_en
-        AND n.name_sv IS NOT DISTINCT FROM c.name_sv
         AND n.highway IS NOT DISTINCT FROM c.highway
         AND n.subclass IS NOT DISTINCT FROM c.subclass
         AND n.brunnel IS NOT DISTINCT FROM c.brunnel
@@ -793,9 +682,6 @@ BEGIN
             coalesce(n.tags->'name', n.ref) = c.name_ref
             AND coalesce(n.tags, '') = coalesce(c.tags, '')
             AND n.ref IS NOT DISTINCT FROM c.ref
-            AND n.name IS NOT DISTINCT FROM c.name
-            AND n.name_en IS NOT DISTINCT FROM c.name_en
-            AND n.name_sv IS NOT DISTINCT FROM c.name_sv
             AND n.highway IS NOT DISTINCT FROM c.highway
             AND n.subclass IS NOT DISTINCT FROM c.subclass
             AND n.brunnel IS NOT DISTINCT FROM c.brunnel

@@ -32,7 +32,7 @@ SELECT geometry,
        tags->'name' AS name,
        COALESCE(tags->'name:en', tags->'name') AS name_en,
        COALESCE(tags->'name:sv', tags->'name', tags->'name:en') AS name_sv,
-       NULLIF(name_sv, name) as name_sv_nodefault,
+       NULLIF(tags->'name:sv', tags->'name') AS name_sv_nodefault,
        tags,
        ref,
        NULLIF(LENGTH(ref), 0) AS ref_length,
@@ -95,10 +95,6 @@ FROM (
 
          -- etldoc: osm_transportation_name_linestring ->  layer_transportation_name:z12
          SELECT geometry,
-                osm_id,
-                name,
-                name_en,
-                name_sv,
                 "tags",
                 ref,
                 highway,
@@ -123,10 +119,6 @@ FROM (
 
          -- etldoc: osm_transportation_name_linestring ->  layer_transportation_name:z13
          SELECT geometry,
-                osm_id,
-                name,
-                name_en,
-                name_sv,
                 "tags",
                 ref,
                 highway,
@@ -155,10 +147,6 @@ FROM (
 
          -- etldoc: osm_transportation_name_linestring ->  layer_transportation_name:z14_
          SELECT geometry,
-                osm_id,
-                name,
-                name_en,
-                name_sv,
                 "tags",
                 ref,
                 highway,

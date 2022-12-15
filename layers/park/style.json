@@ -35,7 +35,7 @@
         "line-offset": 1,
         "line-opacity": 0.8
       },
-      "order": 3
+      "order": 5
     },
     {
       "id": "national_parks_thin",
@@ -50,7 +50,7 @@
         "line-color": "rgba(93, 156, 76, 1)",
         "line-width": 1.5
       },
-      "order": 4
+      "order": 9
     },
     {
       "id": "park-national",
@@ -105,7 +105,7 @@
           2
         ]
       ],
-      "order": 163
+      "order": 188
     }
   ]
 }
