@@ -181,3 +181,4 @@ tables:
       - quarter
       - neighbourhood
       - isolated_dwelling
+      - square

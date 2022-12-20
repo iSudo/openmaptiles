@@ -37,6 +37,7 @@ def_poi_mapping_amenity: &poi_mapping_amenity
   - kindergarten
   - library
   - marketplace
+  - square
   - motorcycle_parking
   - nightclub
   - nursing_home
@@ -63,6 +64,7 @@ def_poi_mapping_amenity: &poi_mapping_amenity
   - university
   - veterinary
   - waste_basket
+  - conference_centre
 
 # barrier values , see http://taginfo.openstreetmap.org/keys/barrier#values
 def_poi_mapping_barrier: &poi_mapping_barrier
@@ -119,6 +121,7 @@ def_poi_mapping_leisure: &poi_mapping_leisure
 # office values , see http://taginfo.openstreetmap.org/keys/office#values
 def_poi_mapping_office: &poi_mapping_office
   - diplomatic
+  - government
 
 # railway values , see http://taginfo.openstreetmap.org/keys/railway#values
 def_poi_mapping_railway: &poi_mapping_railway
@@ -375,6 +378,9 @@ def_poi_fields: &poi_fields
   - name: wheelchair
     key: wheelchair
     type: bool
+  - name: theatre_type
+    key: theatre:type
+    type: string
   - name: operator
     key: operator
     type: string

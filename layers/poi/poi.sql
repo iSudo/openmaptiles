@@ -69,6 +69,7 @@ FROM (
          FROM osm_poi_point
          WHERE geometry && bbox
            AND zoom_level >= 14
+           AND subclass != 'place_of_worship'
 
          UNION ALL
 
