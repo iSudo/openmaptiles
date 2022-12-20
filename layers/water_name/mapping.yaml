@@ -18,6 +18,9 @@ tables:
       type: string
     - name: tags
       type: hstore_tags
+    - name: leisure
+      key: leisure
+      type: string
     - name: place
       key: place
       type: string
@@ -34,3 +37,5 @@ tables:
       place:
       - ocean
       - sea
+      leisure:
+      - swimming_pool

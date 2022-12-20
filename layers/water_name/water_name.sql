@@ -1,6 +1,5 @@
 -- etldoc: layer_water_name[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_water_name | <z0_8> z0_8 | <z9_13> z9_13 | <z14_> z14+" ] ;
-
 CREATE OR REPLACE FUNCTION layer_water_name(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (
@@ -29,7 +28,7 @@ SELECT
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
     tags,
-    'lake'::text AS class,
+    COALESCE(NULLIF(leisure, ''), 'lake'::text) AS class,
     is_intermittent::int AS intermittent
 FROM osm_water_lakeline
 WHERE geometry && bbox
@@ -49,7 +48,7 @@ SELECT
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
     tags,
-    'lake'::text AS class,
+    COALESCE(NULLIF(leisure, ''), 'lake'::text) AS class,
     is_intermittent::int AS intermittent
 FROM osm_water_point
 WHERE geometry && bbox
