@@ -80,10 +80,12 @@ def_poi_mapping_barrier: &poi_mapping_barrier
 # building values , see http://taginfo.openstreetmap.org/keys/building#values
 def_poi_mapping_building: &poi_mapping_building
   - dormitory
+  - government
 
 # highway values , see http://taginfo.openstreetmap.org/keys/highway#values
 def_poi_mapping_highway: &poi_mapping_highway
   - bus_stop
+  - pedestrian
 
 # historic values , see http://taginfo.openstreetmap.org/keys/historic#values
 def_poi_mapping_historic: &poi_mapping_historic
