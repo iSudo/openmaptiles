@@ -74,6 +74,7 @@ tables:
       - railway
       - cemetery
       - military
+      - quarry
       # zoning
       - residential
       - commercial
@@ -88,6 +89,7 @@ tables:
       - college
       - library
       - hospital
+      - grave_yard
       leisure:
       - stadium
       - pitch

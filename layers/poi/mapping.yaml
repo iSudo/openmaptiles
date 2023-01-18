@@ -9,6 +9,7 @@ def_poi_mapping_aerialway: &poi_mapping_aerialway
 # amenity values , see http://taginfo.openstreetmap.org/keys/amenity#values
 def_poi_mapping_amenity: &poi_mapping_amenity
   - arts_centre
+  - atm
   - bank
   - bar
   - bbq
@@ -25,7 +26,6 @@ def_poi_mapping_amenity: &poi_mapping_amenity
   - dentist
   - doctors
   - drinking_water
-  - embassy
   - fast_food
   - ferry_terminal
   - fire_station
@@ -37,6 +37,7 @@ def_poi_mapping_amenity: &poi_mapping_amenity
   - kindergarten
   - library
   - marketplace
+  - square
   - motorcycle_parking
   - nightclub
   - nursing_home
@@ -44,6 +45,7 @@ def_poi_mapping_amenity: &poi_mapping_amenity
   - pharmacy
   - place_of_worship
   - police
+  - parcel_locker
   - post_box
   - post_office
   - prison
@@ -62,6 +64,7 @@ def_poi_mapping_amenity: &poi_mapping_amenity
   - university
   - veterinary
   - waste_basket
+  - conference_centre
 
 # barrier values , see http://taginfo.openstreetmap.org/keys/barrier#values
 def_poi_mapping_barrier: &poi_mapping_barrier
@@ -77,10 +80,12 @@ def_poi_mapping_barrier: &poi_mapping_barrier
 # building values , see http://taginfo.openstreetmap.org/keys/building#values
 def_poi_mapping_building: &poi_mapping_building
   - dormitory
+  - government
 
 # highway values , see http://taginfo.openstreetmap.org/keys/highway#values
 def_poi_mapping_highway: &poi_mapping_highway
   - bus_stop
+  - pedestrian
 
 # historic values , see http://taginfo.openstreetmap.org/keys/historic#values
 def_poi_mapping_historic: &poi_mapping_historic
@@ -106,7 +111,6 @@ def_poi_mapping_leisure: &poi_mapping_leisure
   - hackerspace
   - marina
   - miniature_golf
-  - park
   - pitch
   - playground
   - sports_centre
@@ -114,6 +118,11 @@ def_poi_mapping_leisure: &poi_mapping_leisure
   - swimming_area
   - swimming_pool
   - water_park
+
+# office values , see http://taginfo.openstreetmap.org/keys/office#values
+def_poi_mapping_office: &poi_mapping_office
+  - diplomatic
+  - government
 
 # railway values , see http://taginfo.openstreetmap.org/keys/railway#values
 def_poi_mapping_railway: &poi_mapping_railway
@@ -178,6 +187,7 @@ def_poi_mapping_shop: &poi_mapping_shop
   - kiosk
   - lamps
   - laundry
+  - locksmith
   - mall
   - massage
   - mobile_phone
@@ -316,6 +326,9 @@ def_poi_mapping_tourism: &poi_mapping_tourism
 def_poi_mapping_waterway: &poi_mapping_waterway
   - dock
 
+def_poi_mapping_natural: &poi_mapping_natural
+  - beach
+
 def_poi_fields: &poi_fields
   - name: osm_id
     type: id
@@ -348,6 +361,9 @@ def_poi_fields: &poi_fields
   - name: uic_ref
     key: uic_ref
     type: string
+  - name: ref
+    key: ref
+    type: string
   - name: religion
     key: religion
     type: string
@@ -366,8 +382,17 @@ def_poi_fields: &poi_fields
   - name: wheelchair
     key: wheelchair
     type: bool
-  - name: ref
-    key: ref
+  - name: theatre_type
+    key: theatre:type
+    type: string
+  - name: operator
+    key: operator
+    type: string
+  - name: network
+    key: network
+    type: string
+  - name: brand
+    key: brand
     type: string
 
 def_poi_mapping: &poi_mapping
@@ -379,11 +404,13 @@ def_poi_mapping: &poi_mapping
   historic: *poi_mapping_historic
   landuse: *poi_mapping_landuse
   leisure: *poi_mapping_leisure
+  office: *poi_mapping_office
   railway: *poi_mapping_railway
   shop: *poi_mapping_shop
   sport: *poi_mapping_sport
   tourism: *poi_mapping_tourism
   waterway: *poi_mapping_waterway
+  natural: *poi_mapping_natural
 
 tables:
   # etldoc: imposm3 -> osm_poi_point
