@@ -100,6 +100,8 @@ tables:
       - water
       - bay
       - spring
+      - strait
+      - cape
       waterway:
       - dock
       water:
