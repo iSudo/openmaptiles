@@ -21,6 +21,9 @@ tables:
     - name: leisure
       key: leisure
       type: string
+    - name: natural
+      key: natural
+      type: string
     - name: place
       key: place
       type: string
@@ -39,3 +42,9 @@ tables:
       - sea
       leisure:
       - swimming_pool
+      natural:
+      - water
+      - bay
+      - spring
+      - strait
+      - cape

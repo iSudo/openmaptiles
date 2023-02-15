@@ -68,7 +68,7 @@ SELECT
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
     tags,
-    place::text AS class,
+    COALESCE(NULLIF(leisure, ''), NULLIF("natural", ''), place::text) AS class,
     is_intermittent::int AS intermittent
 FROM osm_marine_point
 WHERE geometry && bbox
