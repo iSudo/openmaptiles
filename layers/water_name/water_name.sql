@@ -75,7 +75,8 @@ WHERE geometry && bbox
   AND (
         place = 'ocean'
         OR (zoom_level >= "rank" AND "rank" IS NOT NULL)
-        OR (zoom_level >= 8)
+        OR (zoom_level >= 8 AND "natural" IS NULL)
+        OR ("natural" IS NOT NULL AND zoom_level >= 14)
     );
 $$ LANGUAGE SQL STABLE
                 -- STRICT
