@@ -48,7 +48,7 @@ SELECT
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
     tags,
-    COALESCE(NULLIF(leisure, ''), 'lake'::text) AS class,
+    COALESCE(NULLIF(leisure, ''), NULLIF("natural", ''), 'lake'::text) AS class,
     is_intermittent::int AS intermittent
 FROM osm_water_point
 WHERE geometry && bbox
@@ -68,14 +68,15 @@ SELECT
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
     tags,
-    place::text AS class,
+    COALESCE(NULLIF(leisure, ''), NULLIF("natural", ''), place::text) AS class,
     is_intermittent::int AS intermittent
 FROM osm_marine_point
 WHERE geometry && bbox
   AND (
         place = 'ocean'
         OR (zoom_level >= "rank" AND "rank" IS NOT NULL)
-        OR (zoom_level >= 8)
+        OR (zoom_level >= 8 AND "natural" IS NULL)
+        OR ("natural" IS NOT NULL AND zoom_level >= 14)
     );
 $$ LANGUAGE SQL STABLE
                 -- STRICT
