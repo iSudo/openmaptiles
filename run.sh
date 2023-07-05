@@ -17,8 +17,11 @@ if [ -f $FILENAME ]; then
 fi
 
 curl -sSfL "https://karttapalvelu.storage.hsldev.com/finland.osm/finland.osm.pbf" -o data/finland-latest.osm.pbf
+curl -sSfL "https://download.geofabrik.de/europe/estonia-latest.osm.pbf" -o data/estonia-latest.osm.pbf
 
-./quickstart.sh --empty finland-latest
+osmium merge data/finland-latest.osm.pbf data/estonia-latest.osm.pbf -o data/fin-est-latest.osm.pbf --overwrite
+
+./quickstart.sh --empty fin-est-latest
 
 if [ ! -f $FILENAME ]; then
     (echo >&2 "File not found, exiting")
