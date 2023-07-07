@@ -11,10 +11,6 @@ export FILENAME=data/tiles.mbtiles
 export PREVIOUS_EXPORT_FILENAME=data/prev/old_tiles.mbtiles
 export MIN_SIZE=660000000
 
-# This helps to build OpenMapTilesTools image on some environments,
-# since build from git is not supported on BuildKit
-export DOCKER_BUILDKIT=0
-
 if [ -f $FILENAME ]; then
     mkdir -p data/prev
     mv -f $FILENAME $PREVIOUS_EXPORT_FILENAME
