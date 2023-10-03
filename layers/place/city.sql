@@ -22,7 +22,7 @@ SELECT *
 FROM (
          SELECT osm_id,
                 geometry,
-                name,
+                COALESCE(NULLIF(name_fi, ''), name) as name,
                 COALESCE(NULLIF(name_en, ''), name) AS name_en,
                 COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
                 NULLIF(name_sv, name) as name_sv_nodefault,
@@ -38,7 +38,7 @@ FROM (
          UNION ALL
          SELECT osm_id,
                 geometry,
-                name,
+                COALESCE(NULLIF(name_fi, ''), name) as name,
                 COALESCE(NULLIF(name_en, ''), name) AS name_en,
                 COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
                 NULLIF(name_sv, name) as name_sv_nodefault,
@@ -50,6 +50,7 @@ FROM (
                   SELECT osm_id,
                          geometry,
                          name,
+                         COALESCE(NULLIF(name_fi, ''), name) as name_fi,
                          COALESCE(NULLIF(name_en, ''), name) AS name_en,
                          COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
                          NULLIF(name_sv, name) as name_sv_nodefault,

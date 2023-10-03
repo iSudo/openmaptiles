@@ -24,7 +24,7 @@ FROM (
              -- etldoc: osm_continent_point -> layer_place:z0_3
              osm_id * 10 AS osm_id,
              geometry,
-             name,
+             COALESCE(NULLIF(name_fi, ''), name) as name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
              NULLIF(name_sv, name) as name_sv_nodefault,
@@ -46,7 +46,7 @@ FROM (
              -- etldoc: osm_country_point -> layer_place:z12_14
              osm_id * 10 AS osm_id,
              geometry,
-             name,
+             COALESCE(NULLIF(name_fi, ''), name) as name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
              NULLIF(name_sv, name) as name_sv_nodefault,
@@ -69,7 +69,7 @@ FROM (
              -- etldoc: osm_state_point  -> layer_place:z12_14
              osm_id * 10 AS osm_id,
              geometry,
-             name,
+             COALESCE(NULLIF(name_fi, ''), name) as name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
              NULLIF(name_sv, name) as name_sv_nodefault,
@@ -89,7 +89,7 @@ FROM (
              -- etldoc: osm_island_point    -> layer_place:z12_14
              osm_id * 10 AS osm_id,
              geometry,
-             name,
+             COALESCE(NULLIF(name_fi, ''), name) as name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
              NULLIF(name_sv, name) as name_sv_nodefault,
@@ -109,7 +109,7 @@ FROM (
              -- etldoc: osm_island_polygon  -> layer_place:z12_14
              osm_id * 10 AS osm_id,
              geometry,
-             name,
+             COALESCE(NULLIF(name_fi, ''), name) as name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
              NULLIF(name_sv, name) as name_sv_nodefault,

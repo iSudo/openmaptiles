@@ -23,7 +23,7 @@ SELECT
         ELSE osm_id * 10 + 1
         END AS osm_id_hash,
     geometry,
-    name,
+    COALESCE(NULLIF(name_fi, ''), name) AS name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
@@ -43,7 +43,7 @@ SELECT
         ELSE osm_id * 10 + 1
         END AS osm_id_hash,
     geometry,
-    name,
+    COALESCE(NULLIF(name_fi, ''), name) AS name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
@@ -63,7 +63,7 @@ SELECT
     -- etldoc: osm_marine_point ->  layer_water_name:z14_
     osm_id * 10 AS osm_id_hash,
     geometry,
-    name,
+    COALESCE(NULLIF(name_fi, ''), name) AS name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,

@@ -2,6 +2,10 @@ name_field: &name
   name: name
   key: name
   type: string
+name_fi_field: &name_fi
+  name: name_fi
+  key: name:fi
+  type: string
 name_en_field: &name_en
   name: name_en
   key: name:en
@@ -26,6 +30,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
+    - *name_fi
     - *name_en
     - *name_sv
     - name: tags
@@ -46,6 +51,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
+    - *name_fi
     - *name_en
     - *name_sv
     - *rank
@@ -78,6 +84,7 @@ tables:
     - name: area
       type: area
     - *name
+    - *name_fi
     - *name_en
     - *name_sv
     - name: tags
@@ -99,6 +106,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
+    - *name_fi
     - *name_en
     - *name_sv
     - name: tags
@@ -120,6 +128,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
+    - *name_fi
     - *name_en
     - *name_sv
     - name: tags
@@ -154,6 +163,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
+    - *name_fi
     - *name_en
     - *name_sv
     - name: tags
