@@ -6,7 +6,7 @@ layer:
   buffer_size: 64
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
   fields:
-    name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the POI.
+    name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the POI. Prefer Finnish name:fi if available.
     name_en: English name `name:en` if available, otherwise `name`.
     name_sv: Swedish name `name:sv` if available, otherwise `name`.
     name_sv_nodefault: Swedish name `name:sv` if available.
@@ -22,9 +22,9 @@ layer:
                      'coffee', 'computer', 'convenience', 'copyshop', 'cosmetics', 'garden_centre', 'doityourself',
                      'erotic', 'electronics', 'fabric', 'florist', 'frozen_food', 'furniture', 'video_games', 'video',
                      'general', 'gift', 'hardware', 'hearing_aids', 'hifi', 'ice_cream', 'interior_decoration',
-                     'jewelry', 'kiosk', 'locksmith', 'lamps', 'mall', 'massage', 'motorcycle', 'mobile_phone', 
-                     'newsagent', 'optician', 'outdoor', 'perfumery', 'perfume', 'pet', 'photo', 'second_hand', 
-                     'shoes', 'sports', 'stationery', 'tailor', 'tattoo', 'ticket', 'tobacco', 'toys', 'travel_agency', 
+                     'jewelry', 'kiosk', 'locksmith', 'lamps', 'mall', 'massage', 'motorcycle', 'mobile_phone',
+                     'newsagent', 'optician', 'outdoor', 'perfumery', 'perfume', 'pet', 'photo', 'second_hand',
+                     'shoes', 'sports', 'stationery', 'tailor', 'tattoo', 'ticket', 'tobacco', 'toys', 'travel_agency',
                      'watches', 'weapons', 'wholesale']
         town_hall:
           subclass: ['townhall', 'public_building', 'courthouse', 'community_centre']
@@ -139,7 +139,7 @@ layer:
           Original value of [`layer`](http://wiki.openstreetmap.org/wiki/Key:layer) tag.
     indoor:
       description: |
-          Original value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.   
+          Original value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
     wheelchair:
       description: |
           Original value of [`wheelchair`](http://wiki.openstreetmap.org/wiki/Key:wheelchair) tag.

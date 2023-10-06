@@ -22,6 +22,9 @@ tables:
     - key: name
       name: name
       type: string
+    - name: name_fi
+      key: name:fi
+      type: string
     - name: name_en
       key: name:en
       type: string
@@ -52,7 +55,7 @@ tables:
     - name: member
       type: member_id
     - name: role
-      type: member_role 
+      type: member_role
     - name: geometry
       type: geometry
     - key: waterway
