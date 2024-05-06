@@ -45,7 +45,7 @@ FROM (
          UNION ALL
 
          SELECT ST_LineMerge(ST_Collect(geometry)) AS geometry,
-                transportation_name_tags(NULL::geometry, tags, name, name_fi, name_en, name_sv) AS tags,
+                transportation_name_tags(NULL::geometry, tags, name, name_et, name_en, name_sv) AS tags,
                 NULL AS ref,
                 'shipway' AS highway,
                 shipway AS subclass,
@@ -65,11 +65,11 @@ FROM (
                 NULL::int AS route_rank
          FROM osm_shipway_linestring
          WHERE name <> ''
-         GROUP BY name, name_fi, name_en, name_sv, tags, subclass, "level", layer
+         GROUP BY name, name_et, name_en, name_sv, tags, subclass, "level", layer
          UNION ALL
 
          SELECT ST_LineMerge(ST_Collect(geometry)) AS geometry,
-                transportation_name_tags(NULL::geometry, tags, name, name_fi, name_en, name_sv) AS tags,
+                transportation_name_tags(NULL::geometry, tags, name, name_et, name_en, name_sv) AS tags,
                 NULL AS ref,
                 'aerialway' AS highway,
                 aerialway AS subclass,
@@ -89,7 +89,7 @@ FROM (
                 NULL::int AS route_rank
          FROM osm_aerialway_linestring
          WHERE name <> ''
-         GROUP BY name, name_fi, name_en, name_sv, tags, subclass, "level", layer
+         GROUP BY name, name_et, name_en, name_sv, tags, subclass, "level", layer
      ) AS highway_union
 ;
 CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_name_ref_idx ON osm_transportation_name_linestring (coalesce(tags->'name', ''), coalesce(ref, ''));
@@ -294,7 +294,7 @@ BEGIN
     FROM (
         SELECT hl.geometry,
             hl.osm_id,
-            transportation_name_tags(hl.geometry, hl.tags, hl.name, hl.name_fi, hl.name_en, hl.name_sv) AS tags,
+            transportation_name_tags(hl.geometry, hl.tags, hl.name, hl.name_et, hl.name_en, hl.name_sv) AS tags,
             rm1.network_type,
             CASE
                 WHEN rm1.network_type IS NOT NULL AND rm1.ref::text <> ''
@@ -511,7 +511,7 @@ BEGIN
             n.name_en,
             n.name_sv,
             hstore(string_agg(nullif(slice_language_tags(tags ||
-                                                         hstore(ARRAY ['name', n.name, 'name:fi', n.name_fi, 'name:en', n.name_en, 'name:sv', n.name_sv]))::text,
+                                                         hstore(ARRAY ['name', n.name, 'name:et', n.name_et, 'name:en', n.name_en, 'name:sv', n.name_sv]))::text,
                                      ''), ',')) AS tags,
             n.ref,
             n.highway,
@@ -608,7 +608,7 @@ BEGIN
             AND coalesce(n.tags, '') = coalesce(c.tags, '')
             AND n.ref IS NOT DISTINCT FROM c.ref
             AND n.name IS NOT DISTINCT FROM c.name
-            AND n.name_fi IS NOT DISTINCT FROM c.name_fi
+            AND n.name_et IS NOT DISTINCT FROM c.name_et
             AND n.name_en IS NOT DISTINCT FROM c.name_en
             AND n.name_sv IS NOT DISTINCT FROM c.name_sv
             AND n.highway IS NOT DISTINCT FROM c.highway

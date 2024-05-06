@@ -25,7 +25,7 @@ SELECT
     -- etldoc: osm_aerodrome_label_point -> layer_aerodrome_label:z9
     ABS(osm_id) AS id, -- mvt feature IDs can't be negative
     geometry,
-    COALESCE(NULLIF(name_fi, ''), name) as name,
+    COALESCE(NULLIF(name_et, ''), name) as name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_sv, ''), name, name_en) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,
@@ -47,7 +47,7 @@ SELECT
     -- etldoc: osm_aerodrome_label_point -> layer_aerodrome_label:z10_
     ABS(osm_id) AS id, -- mvt feature IDs can't be negative
     geometry,
-    COALESCE(NULLIF(name_fi, ''), name) as name,
+    COALESCE(NULLIF(name_et, ''), name) as name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
     NULLIF(name_sv, name) as name_sv_nodefault,

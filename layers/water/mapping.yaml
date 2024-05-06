@@ -58,8 +58,8 @@ tables:
     - key: name
       name: name
       type: string
-    - name: name_fi
-      key: name:fi
+    - name: name_et
+      key: name:et
       type: string
     - name: name_en
       key: name:en

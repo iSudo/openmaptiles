@@ -48,13 +48,13 @@ generalized_tables:
     sql_filter: (highway IN ('motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'motorway_link', 'trunk_link', 'primary_link', 'secondary_link', 'tertiary_link', 'busway', 'bus_guideway') OR highway = 'construction' AND construction IN ('motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'motorway_link', 'trunk_link', 'primary_link', 'secondary_link', 'tertiary_link', 'busway', 'bus_guideway')) AND NOT is_area AND ST_IsValid(geometry)
     tolerance: ZRES12
 
-name_field: &name
+name_eteld: &name
   name: name
   key: name
   type: string
-name_fi_field: &name_fi
-  name: name_fi
-  key: name:fi
+name_et_field: &name_et
+  name: name_et
+  key: name:et
   type: string
 name_en_field: &name_en
   name: name_en
@@ -64,7 +64,7 @@ name_sv_field: &name_sv
   name: name_sv
   key: name:sv
   type: string
-short_name_field: &short_name
+short_name_eteld: &short_name
   key: short_name
   name: short_name
   type: string
@@ -191,7 +191,7 @@ tables:
     - *level
     - *indoor
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -273,7 +273,7 @@ tables:
     - *level
     - *indoor
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -313,7 +313,7 @@ tables:
     - *z_order
     - *layer
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -353,7 +353,7 @@ tables:
     - *z_order
     - *layer
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -425,7 +425,7 @@ tables:
     - *layer
     - *level
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags

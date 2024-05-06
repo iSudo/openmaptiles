@@ -1,10 +1,10 @@
-name_field: &name
+name_eteld: &name
   name: name
   key: name
   type: string
-name_fi_field: &name_fi
-  name: name_fi
-  key: name:fi
+name_et_field: &name_et
+  name: name_et
+  key: name:et
   type: string
 name_en_field: &name_en
   name: name_en
@@ -30,7 +30,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -51,7 +51,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - *rank
@@ -84,7 +84,7 @@ tables:
     - name: area
       type: area
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -106,7 +106,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -128,7 +128,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags
@@ -163,7 +163,7 @@ tables:
     - name: geometry
       type: geometry
     - *name
-    - *name_fi
+    - *name_et
     - *name_en
     - *name_sv
     - name: tags

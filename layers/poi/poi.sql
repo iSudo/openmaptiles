@@ -25,7 +25,7 @@ AS
 $$
 SELECT osm_id_hash AS osm_id,
        geometry,
-       NULLIF(COALESCE(NULLIF(name_fi, ''), name), '') as name,
+       NULLIF(COALESCE(NULLIF(name_et, ''), name), '') as name,
        COALESCE(NULLIF(name_en, ''), name) AS name_en,
        COALESCE(NULLIF(name_sv, ''), name) AS name_sv,
        NULLIF(name_sv, name) as name_sv_nodefault,

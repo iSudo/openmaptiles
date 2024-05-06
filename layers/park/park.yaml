@@ -17,7 +17,7 @@ layer:
           `nature_reserve` is the class of `protection_title=Nature Reserve` and `leisure=nature_reserve`.
           The class for other [`protection_title`](http://wiki.openstreetmap.org/wiki/key:protection_title)
           values is similarly assigned.
-    name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the park (point features only). Prefer Finnish name:fi if available.
+    name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the park (point features only). Prefer Finnish name:et if available.
     name_en: English name `name:en` if available, otherwise `name` (point features only).
     name_sv: Swedish name `name:sv` if available, otherwise `name` (point features only).
     name_sv_nodefault: Swedish name `name:sv` if available (point features only).
